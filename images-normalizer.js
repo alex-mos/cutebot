@@ -1,44 +1,56 @@
 'use strict';
 
 var fs = require('fs');
-
-/* Модуль приведения загруженных фотографий к плоской структуре с инкрементирующимися названиями файлов */
-
+var Path = require('path');
 
 
-// Очистка промежуточной директории.
-var checkTempDir = function() {
-	fs.access('images/tamasina', fs.W_OK, function(err) {
-		if (err) {
-			console.log('No access to images folder');
-			return false;
-		}
+/*** Модуль приведения загруженных фотографий к плоской структуре с инкрементирующимися названиями файлов todo: оформить жсДоком ***/
 
-		fs.access('images/tamasina/_temp', fs.F_OK, function (err) {
-			if (err) {
-				createTempDir();
+// Проверка, является ли объект в директорией файлом. (факапится, если в названии директории есть точка. todo: придумать что-нибудь получше.)
+var isFile = (name) => {
+	return name.indexOf('.') > -1;
+};
+
+
+// Копирование файлов из поддиректорий в корень
+var fileNumber = 1;
+var baseDir = 'images/test';
+var exclude = ['.DS_Store'];
+
+
+var subdirFilesCopy = (path, callback) => {
+
+	fs.readdir(path, (err, stats, callback) => {
+		if (err) throw err;
+
+		stats.forEach((name, index) => {
+			if (exclude.indexOf(name) != -1) {
+				fs.unlink(Path.join(path, name));
+				console.log('deleted file ' + name);
+			} else if (isFile(name)) {
+				// Это файл. Копируем его в базовую директорию.
+				fs.rename(Path.join(path, name), Path.join(baseDir, fileNumber.toString() + name.slice(name.lastIndexOf('.'), name.length)));
+				fileNumber = fileNumber + 1;
 			} else {
-				// Удаляем существующую временную директорию.
-				fs.rmdir('images/tamasina/_temp', function() {
-					console.log('Old _temp dir removed.');
-					createTempDir();
-				});
+				// Это директория. Рекурсивно вызываем текущую функцию.
+				console.log('Processing directory ' + Path.join(path, name));
+				subdirFilesCopy(Path.join(path, name));
+			}
+		}, callback());
+	});
+};
+
+
+subdirFilesCopy(baseDir, function() {
+
+	fs.readdir(baseDir, (err, stats) => {
+		if (err) throw err;
+
+		stats.forEach((name) => {
+			if (!isFile(name)) {
+				fs.rmdir(name);
 			}
 		});
 	});
-};
 
-
-
-// Создание временной директории
-var createTempDir = function() {
-
-	fs.mkdir('images/tamasina/_temp', function(err) {
-		if (err) throw err;
-
-		// Вызываем функцию копирования файлов из поддиректорий.
-
-	});
-};
-
-checkTempDir();
+});
