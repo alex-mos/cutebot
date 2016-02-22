@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/alex-mos/cutebot#readme",
   "dependencies": {
+    "botanio": "0.0.6",
     "mongodb": "^2.1.7",
     "node-telegram-bot-api": "^0.20.1"
   }

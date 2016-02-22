@@ -9,13 +9,13 @@ var dbURL = 'mongodb://localhost:27017/cutepics';
 var token = settings.botAccessToken;
 var bot = new TelegramBot(token, {polling: true});
 
+var botan = require('botanio')(settings.botanToken);
+
 mongo.connect(dbURL, function(err, db) {
 	if (err) throw err;
 
 
-	var sendImage = function(msg, imageCollection) {
-		var chatId = msg.chat.id;
-
+	var sendImage = function(message, imageCollection) {
 		var collection = db.collection(imageCollection);
 		var logCollection = db.collection('logs');
 
@@ -31,16 +31,23 @@ mongo.connect(dbURL, function(err, db) {
 
 				if (doc != null) {
 					var photo = doc.path;
-					bot.sendPhoto(chatId, photo);
+					bot.sendPhoto(message.chat.id, photo);
 				} else {
+
+					// botan logging
+					//console.log(message.from.id);
+					//botan.track(settings.botanKey, message.from.id, message, message.text);
+					botan.track(message, 'Start');
+
+					// mongo logging
 					logCollection.insert({
-						date: msg.date,
-						username: msg.chat.username,
-						chatType: msg.chat.type,
-						text: msg.text
+						date: message.date,
+						username: message.chat.username,
+						chatType: message.chat.type,
+						text: message.text
 					});
 
-					//console.log(msg.date, msg.chat.username + ', ' + msg.chat.type + ', ' + msg.text);
+					//console.log(message.date, message.chat.username + ', ' + message.chat.type + ', ' + message.text);
 					//bot.sendMessage(chatId, 'Что-то пошло не так. Бот ушёл на перерыв.');
 				}
 			});
@@ -49,14 +56,18 @@ mongo.connect(dbURL, function(err, db) {
 
 
 
-	bot.on('message', function (msg) {
+	bot.on('message', function (message) {
 
-		if (msg.text === '/cute') {
-			sendImage(msg, 'cute');
+		if (message.text === '/help') {
+			bot.sendMessage(message.chat.id, 'Всё просто. Отправляешь /cute - получаешь картинку.');
 		}
 
-		if (msg.text === '/tamasina') {
-			sendImage(msg, 'tamasina');
+		if (message.text === '/cute') {
+			sendImage(message, 'cute');
+		}
+
+		if (message.text === '/tamasina') {
+			sendImage(message, 'tamasina');
 		}
 
 	});
@@ -64,38 +75,23 @@ mongo.connect(dbURL, function(err, db) {
 
 
 
-
-
-
-
 // message example
-var example = {
-	message_id: 33,
-	from: {
-		id: 165698,
-		first_name: 'Alexander',
-		last_name: 'Mospan',
-		username: 'alexander_mospan'
-	},
-	chat: {
-		id: 165698,
-		first_name: 'Alexander',
-		last_name: 'Mospan',
-		username: 'alexander_mospan',
-		type: 'private'
-	},
-	date: 1456145656,
-	text: 'asdf'
-};
 
-
-
-
-
-
-// Matches /echo [whatever]
-//bot.onText(/\/echo (.+)/, function (msg, match) {
-//	var fromId = msg.from.id;
-//	var resp = match[1];
-//	bot.sendMessage(fromId, resp);
-//});
+// var example = {
+//	message_id: 33,
+//	from: {
+//		id: 165698,
+//		first_name: 'Alexander',
+//		last_name: 'Mospan',
+//		username: 'alexander_mospan'
+//	},
+//	chat: {
+//		id: 165698,
+//		first_name: 'Alexander',
+//		last_name: 'Mospan',
+//		username: 'alexander_mospan',
+//		type: 'private'
+//	},
+//	date: 1456145656,
+//	text: 'asdf'
+//};
