@@ -1,0 +1,23 @@
+{
+  "name": "cutebot",
+  "version": "1.0.0",
+  "description": "telegram bot with cute animal pictures",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alex-mos/cutebot.git"
+  },
+  "author": "alexander.mospan@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alex-mos/cutebot/issues"
+  },
+  "homepage": "https://github.com/alex-mos/cutebot#readme",
+  "dependencies": {
+    "mongodb": "^2.1.7",
+    "node-telegram-bot-api": "^0.20.1"
+  }
+}
