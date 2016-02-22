@@ -13,33 +13,52 @@ mongo.connect(dbURL, function(err, db) {
 	if (err) throw err;
 
 
+	var sendImage = function(msg, imageCollection) {
+		var chatId = msg.chat.id;
+
+		var collection = db.collection(imageCollection);
+		var logCollection = db.collection('logs');
+
+		collection.count({}, function(err, count){
+			var cursor = collection.find(
+				{
+					index: Math.ceil(Math.random() * count)
+				}
+			);
+
+			cursor.each(function(err, doc) {
+				if (err) throw err;
+
+				if (doc != null) {
+					var photo = doc.path;
+					bot.sendPhoto(chatId, photo);
+				} else {
+					logCollection.insert({
+						date: msg.date,
+						username: msg.chat.username,
+						chatType: msg.chat.type,
+						text: msg.text
+					});
+
+					//console.log(msg.date, msg.chat.username + ', ' + msg.chat.type + ', ' + msg.text);
+					//bot.sendMessage(chatId, 'Что-то пошло не так. Бот ушёл на перерыв.');
+				}
+			});
+		});
+	};
+
+
+
 	bot.on('message', function (msg) {
 
 		if (msg.text === '/cute') {
-
-			var chatId = msg.chat.id;
-
-			var collection = db.collection('cute');
-
-			collection.count({}, function(err, count){
-				var cursor = collection.find(
-					{
-						index: Math.ceil(Math.random() * count)
-					}
-				);
-
-				cursor.each(function(err, doc) {
-					if (err) throw err;
-
-					if (doc != null) {
-						var photo = doc.path;
-						bot.sendPhoto(chatId, photo);
-					} else {
-						//bot.sendMessage(chatId, 'Что-то пошло не так. Бот ушёл на перерыв.');
-					}
-				});
-			});
+			sendImage(msg, 'cute');
 		}
+
+		if (msg.text === '/tamasina') {
+			sendImage(msg, 'tamasina');
+		}
+
 	});
 });
 
