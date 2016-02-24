@@ -48,8 +48,10 @@ mongo.connect(dbURL, function(err, db) {
 					});
 
 					// mongo logging
+					var msgTime = new Date(message.date * 1000);
+
 					logCollection.insert({
-						date: message.date,
+						date: msgTime.toLocaleString(),
 						username: message.chat.username,
 						chatType: message.chat.type,
 						text: message.text
