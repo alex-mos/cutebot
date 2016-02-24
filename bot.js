@@ -31,13 +31,21 @@ mongo.connect(dbURL, function(err, db) {
 
 				if (doc != null) {
 					var photo = doc.path;
-					bot.sendPhoto(message.chat.id, photo);
+					if (doc.path.slice(doc.path.lastIndexOf('.'), doc.path.length) === '.gif') {
+						bot.sendDocument(message.chat.id, photo);
+					} else {
+						bot.sendPhoto(message.chat.id, photo);
+					}
 				} else {
 
 					// botan logging
-					//console.log(message.from.id);
+					console.log(JSON.stringify(message));
 					//botan.track(settings.botanKey, message.from.id, message, message.text);
-					botan.track(message, 'Start');
+					botan.track(message, 'Message', function(err, response, body){
+						console.log('err: ' + err);
+						//console.log(response);
+						console.log(body);
+					});
 
 					// mongo logging
 					logCollection.insert({
