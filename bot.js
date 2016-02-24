@@ -51,7 +51,8 @@ mongo.connect(dbURL, function(err, db) {
 					var msgTime = new Date(message.date * 1000);
 
 					logCollection.insert({
-						date: msgTime.toLocaleString(),
+						date: message.date,
+						dateReadable: msgTime.toLocaleString(),
 						username: message.chat.username,
 						chatType: message.chat.type,
 						text: message.text
