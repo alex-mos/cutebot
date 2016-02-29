@@ -9,7 +9,7 @@ var dbURL = 'mongodb://localhost:27017/cutepics';
 var token = settings.botAccessToken;
 var bot = new TelegramBot(token, {polling: true});
 
-var botan = require('botanio')(settings.botanToken);
+var botan = require('botanio')(settings.botanKey);
 
 mongo.connect(dbURL, function(err, db) {
 	if (err) throw err;
@@ -38,12 +38,11 @@ mongo.connect(dbURL, function(err, db) {
 					}
 				} else {
 
-					// botan logging
 					console.log(JSON.stringify(message));
-					//botan.track(settings.botanKey, message.from.id, message, message.text);
+
+					// botan logging
 					botan.track(message, 'Message', function(err, response, body){
 						console.log('err: ' + err);
-						//console.log(response);
 						console.log(body);
 					});
 
@@ -65,8 +64,6 @@ mongo.connect(dbURL, function(err, db) {
 		});
 	};
 
-
-
 	bot.on('message', function (message) {
 
 		if (message.text === '/help') {
@@ -79,6 +76,10 @@ mongo.connect(dbURL, function(err, db) {
 
 		if (message.text === '/tamasina') {
 			sendImage(message, 'tamasina');
+		}
+
+		if (message.text === '/dita') {
+			sendImage(message, 'dita');
 		}
 
 	});
