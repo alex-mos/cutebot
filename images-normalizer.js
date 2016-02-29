@@ -4,5 +4,7 @@ var df = require('./dir-flatten'); // Использовать, если пап�
 var colCreator = require('./collection-creator');
 
 
+colCreator('cute');
 colCreator('dita');
+colCreator('tamasina');
 //df('images/tamasina');
