@@ -87,6 +87,25 @@ mongo.connect(dbURL, function(err, db) {
 
 
 
+// Часть, нужная только для того, чтобы passenger понимал, что приложение работает. @todo разобраться, как запускать его без порта
+
+const http = require('http');
+
+const hostname = '0.0.0.0';
+const port = 3000;
+
+http.createServer((req, res) => {
+
+	res.writeHead(200, {
+		'Content-Type': 'text/html'
+	});
+
+	res.end('<a href="https://telegram.me/cute_pic_bot">Cutebot</a> is working\n');
+
+}).listen(port, hostname);
+
+
+
 // message example
 
 // var example = {
