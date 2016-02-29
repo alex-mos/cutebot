@@ -67,7 +67,7 @@ mongo.connect(dbURL, function(err, db) {
 	bot.on('message', function (message) {
 
 		if (message.text === '/help') {
-			bot.sendMessage(message.chat.id, 'Всё просто. Отправляешь /cute - получаешь картинку.');
+			bot.sendMessage(message.chat.id, 'Отправляешь /cute - получаешь картинку.');
 		}
 
 		if (message.text === '/cute') {
