@@ -66,19 +66,19 @@ mongo.connect(dbURL, function(err, db) {
 
 	bot.on('message', function (message) {
 
-		if (message.text === '/help') {
+		if (message.text === '/help' || message.text === '/help@cute_pic_bot') {
 			bot.sendMessage(message.chat.id, 'Отправляешь /cute - получаешь картинку.');
 		}
 
-		if (message.text === '/cute') {
+		if (message.text === '/cute' || message.text === '/cute@cute_pic_bot') {
 			sendImage(message, 'cute');
 		}
 
-		if (message.text === '/tamasina') {
+		if (message.text === '/tamasina' || message.text === '/tamasina@cute_pic_bot') {
 			sendImage(message, 'tamasina');
 		}
 
-		if (message.text === '/dita') {
+		if (message.text === '/dita' || message.text === '/dita@cute_pic_bot') {
 			sendImage(message, 'dita');
 		}
 
