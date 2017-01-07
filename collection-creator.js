@@ -1,10 +1,10 @@
 'use strict';
 
-var fs = require('fs');
-var mongo = require('mongodb').MongoClient;
-var Path = require('path');
+const fs = require('fs');
+const mongo = require('mongodb').MongoClient;
+const Path = require('path');
 
-var url = 'mongodb://localhost:27017/cutepics';
+const url = 'mongodb://localhost:27017/cutepics';
 
 var createCollectionByDir = (category) => { // category - имя папки, изображения из которой попадут в одноимённую коллекцию.
 

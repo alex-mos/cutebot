@@ -1,15 +1,16 @@
 'use strict';
 
-var TelegramBot = require('node-telegram-bot-api');
-var settings = require('./secret-settings');
-var mongo = require('mongodb').MongoClient;
+const TelegramBot = require('node-telegram-bot-api');
+const settings = require('./secret-settings');
+const mongo = require('mongodb').MongoClient;
 
-var dbURL = 'mongodb://localhost:27017/cutepics';
+const dbURL = 'mongodb://localhost:27017/cutepics';
 
-var token = settings.botAccessToken;
-var bot = new TelegramBot(token, {polling: true});
+const token = settings.botAccessToken;
+const bot = new TelegramBot(token, {polling: true});
 
-var botan = require('botanio')(settings.botanKey);
+const botan = require('botanio')(settings.botanKey);
+
 
 mongo.connect(dbURL, function(err, db) {
 	if (err) throw err;
@@ -86,9 +87,7 @@ mongo.connect(dbURL, function(err, db) {
 });
 
 
-
 // Часть, нужная только для того, чтобы passenger понимал, что приложение работает. @todo разобраться, как запускать его без порта
-
 const http = require('http');
 
 const hostname = '0.0.0.0';

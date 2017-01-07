@@ -1,11 +1,9 @@
 'use strict';
 
-var fs = require('fs');
-var Path = require('path');
-
+const fs = require('fs');
+const Path = require('path');
 
 /*** Модуль приведения загруженных фотографий к плоской структуре с инкрементирующимися названиями файлов todo: оформить жсДоком ***/
-
 var fileNumber = 1;
 var exclude = ['.DS_Store'];
 
@@ -62,7 +60,6 @@ var dirFlatten = function(path) {
 
 	subdirFilesCopy(baseDir);
 };
-
 
 
 module.exports = dirFlatten;
