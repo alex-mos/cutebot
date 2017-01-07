@@ -10,7 +10,7 @@ var createCollectionByDir = (category) => { // category - имя папки, и�
 
 	var path = 'images/' + category;
 
-	mongo.connect(url, function(err, db) { // todo: соединение не закрыто. Разобраться как закрыть.
+	mongo.connect(url, function(err, db) {
 		if (err) throw err;
 
 		var collection = db.collection(category);

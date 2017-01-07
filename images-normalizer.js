@@ -1,10 +1,15 @@
 'use strict';
 
-var df = require('./dir-flatten'); // Использовать, если папка с изображениями имеет сложную структуру и лень вытаскивать все картинки вручную.
-var colCreator = require('./collection-creator');
+const fs = require('fs');
+const df = require('./dir-flatten'); // Использовать, если папка с изображениями имеет сложную структуру и лень вытаскивать все картинки вручную. Пример: df('images/tamasina');
+const colCreator = require('./collection-creator');
 
+fs.readdir('images', function(err, items) {
+  if (err) throw err;
 
-colCreator('cute');
-colCreator('dita');
-colCreator('tamasina');
-//df('images/tamasina');
+  items.forEach(function(item) {
+    if (item !== '.DS_Store') {
+      colCreator(item);
+    }
+  });
+});
