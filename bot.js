@@ -10,15 +10,14 @@ const bot = new TelegramBot(token, {polling: true})
 const botan = require('botanio')(settings.botanKey)
 
 
-mongo.connect(dbURL, function(err, db) {
+mongo.connect(dbURL, (err, db) => {
 	if (err) throw err
 
-
-	var sendImage = function(message, imageCollection) {
+	var sendImage = (message, imageCollection) => {
 		var collection = db.collection(imageCollection)
 		var logCollection = db.collection('logs')
 
-		collection.count({}, function(err, count){
+		collection.count({}, (err, count) => {
 			var cursor = collection.find(
 				{
 					index: Math.ceil(Math.random() * count)
@@ -36,7 +35,6 @@ mongo.connect(dbURL, function(err, db) {
 						bot.sendPhoto(message.chat.id, photo)
 					}
 				} else {
-
 					console.log(JSON.stringify(message))
 
 					// botan logging
@@ -63,23 +61,23 @@ mongo.connect(dbURL, function(err, db) {
 		})
 	}
 
-	bot.on('message', function (message) {
+	bot.on('message', (msg) => {
 
-		if (message.text === '/help' || message.text === '/help@cute_pic_bot') {
-			bot.sendMessage(message.chat.id, 'Отправляешь /cute - получаешь картинку.')
+		if (msg.text === '/start' || msg.text === '/help@cute_pic_bot') {
+			bot.sendMessage(msg.chat.id, 'Отправляешь /cute - получаешь картинку.')
 		}
 
-		if (message.text === '/cute' || message.text === '/cute@cute_pic_bot') {
-			sendImage(message, 'cute')
+		if (msg.text === '/cute' || msg.text === '/cute@cute_pic_bot') {
+			sendImage(msg, 'cute')
 		}
 
-		if (message.text === '/tamasina' || message.text === '/tamasina@cute_pic_bot') {
-			sendImage(message, 'tamasina')
-		}
-
-		if (message.text === '/dita' || message.text === '/dita@cute_pic_bot') {
-			sendImage(message, 'dita')
-		}
+		// if (msg.text === '/tamasina' || msg.text === '/tamasina@cute_pic_bot') {
+		// 	sendImage(msg, 'tamasina')
+		// }
+		//
+		// if (msg.text === '/dita' || msg.text === '/dita@cute_pic_bot') {
+		// 	sendImage(msg, 'dita')
+		// }
 
 	})
 })

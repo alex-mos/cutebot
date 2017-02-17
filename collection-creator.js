@@ -9,13 +9,13 @@ const url = 'mongodb://localhost:27017/cutepics'
 var createCollectionByDir = (category) => { // category - имя папки, изображения из которой попадут в одноимённую коллекцию.
 	var path = 'images/' + category
 
-	mongo.connect(url, function(err, db) {
+	mongo.connect(url, (err, db) => {
 		if (err) throw err
 
 		var collection = db.collection(category)
 
 		// Очищаем коллекцию
-		collection.remove({}, function() {
+		collection.remove({}, () => {
 
 			fs.readdir(path, (err, stats) => {
 				if (err) throw err
@@ -27,7 +27,6 @@ var createCollectionByDir = (category) => { // category - имя папки, и�
 						path: Path.join(path, filename)
 					}, function(err, data) {
 						if (err) throw err
-
 						console.log(JSON.stringify(data))
 					})
 				})
