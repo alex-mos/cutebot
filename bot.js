@@ -7,7 +7,7 @@ const dbURL = 'mongodb://localhost:27017/cutepics'
 const token = settings.botAccessToken
 const bot = new TelegramBot(token, {polling: true})
 
-const botan = require('botanio')(settings.botanKey)
+// const botan = require('botanio')(settings.botanKey)
 
 
 mongo.connect(dbURL, (err, db) => {
@@ -38,10 +38,10 @@ mongo.connect(dbURL, (err, db) => {
 					console.log(JSON.stringify(message))
 
 					// botan logging
-					botan.track(message, 'Message', function(err, response, body){
-						console.log('err: ' + err)
-						console.log(body)
-					})
+					// botan.track(message, 'Message', function(err, response, body){
+						// console.log('err: ' + err)
+						// console.log(body)
+					// })
 
 					// mongo logging
 					var msgTime = new Date(message.date * 1000)
