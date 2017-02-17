@@ -1,5 +1,5 @@
 const fs = require('fs')
-const Path = require('path')
+const path = require('path')
 
 /*** Модуль приведения загруженных фотографий к плоской структуре с инкрементирующимися названиями файлов todo: оформить жсДоком ***/
 var fileNumber = 1
@@ -18,7 +18,7 @@ var removeEmptyDirs = function(path) {
 
 		stats.forEach((name) => {
 			if (!isFile(name)) {
-				fs.rmdir(Path.join(path, name), function(err) {
+				fs.rmdir(path.join(path, name), function(err) {
 					if (err) throw err
 				})
 			}
@@ -39,20 +39,20 @@ var dirFlatten = function(path) {
 
 			stats.forEach((name, index) => {
 				if (exclude.indexOf(name) != -1) {
-					fs.unlink(Path.join(path, name))
+					fs.unlink(path.join(path, name))
 					console.log('deleted file ' + name)
 				} else if (isFile(name)) {
 					// Это файл. Копируем его в базовую директорию.
-					fs.rename(Path.join(path, name), Path.join(baseDir, fileNumber.toString() + name.slice(name.lastIndexOf('.'), name.length)))
+					fs.rename(path.join(path, name), path.join(baseDir, fileNumber.toString() + name.slice(name.lastIndexOf('.'), name.length)))
 					fileNumber = fileNumber + 1
 				} else {
 					// Это директория. Рекурсивно вызываем текущую функцию.
-					console.log('Processing directory ' + Path.join(path, name))
-					subdirFilesCopy(Path.join(path, name))
+					console.log('Processing directory ' + path.join(path, name))
+					subdirFilesCopy(path.join(path, name))
 				}
 			})
 
-			removeEmptyDirs(Path.join(path))
+			removeEmptyDirs(path.join(path))
 		})
 	}
 
