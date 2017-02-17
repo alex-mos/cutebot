@@ -9,7 +9,6 @@ const bot = new TelegramBot(token, {polling: true})
 
 // const botan = require('botanio')(settings.botanKey)
 
-
 mongo.connect(dbURL, (err, db) => {
 	if (err) throw err
 
@@ -68,6 +67,7 @@ mongo.connect(dbURL, (err, db) => {
 		}
 
 		if (msg.text === '/cute' || msg.text === '/cute@cute_pic_bot') {
+			switch (msg.id) {}
 			sendImage(msg, 'cute')
 		}
 
