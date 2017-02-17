@@ -1,25 +1,24 @@
-'use strict';
+'use strict'
 
-const fs = require('fs');
-const mongo = require('mongodb').MongoClient;
-const Path = require('path');
+const fs = require('fs')
+const mongo = require('mongodb').MongoClient
+const Path = require('path')
 
-const url = 'mongodb://localhost:27017/cutepics';
+const url = 'mongodb://localhost:27017/cutepics'
 
 var createCollectionByDir = (category) => { // category - имя папки, изображения из которой попадут в одноимённую коллекцию.
-
-	var path = 'images/' + category;
+	var path = 'images/' + category
 
 	mongo.connect(url, function(err, db) {
-		if (err) throw err;
+		if (err) throw err
 
-		var collection = db.collection(category);
+		var collection = db.collection(category)
 
 		// Очищаем коллекцию
 		collection.remove({}, function() {
 
 			fs.readdir(path, (err, stats) => {
-				if (err) throw err;
+				if (err) throw err
 
 				stats.forEach((filename, index) => {
 
@@ -27,17 +26,14 @@ var createCollectionByDir = (category) => { // category - имя папки, и�
 						index: index + 1,
 						path: Path.join(path, filename)
 					}, function(err, data) {
-						if (err) throw err;
+						if (err) throw err
 
-						console.log(JSON.stringify(data));
-					});
-				});
+						console.log(JSON.stringify(data))
+					})
+				})
+			})
+		})
+	})
+}
 
-			});
-
-		});
-	});
-
-};
-
-module.exports = createCollectionByDir;
+module.exports = createCollectionByDir
